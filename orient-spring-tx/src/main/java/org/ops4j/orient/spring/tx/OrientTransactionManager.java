@@ -18,6 +18,8 @@
 
 package org.ops4j.orient.spring.tx;
 
+import com.orientechnologies.orient.core.db.ODatabaseComplexInternal;
+import com.orientechnologies.orient.core.db.record.ODatabaseRecordInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionDefinition;
@@ -128,9 +130,9 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
         if (!db.isClosed()) {
             db.close();
         }
-        ODatabaseComplex<?> oldDb = (ODatabaseComplex<?>) suspendedResources;
+        ODatabaseComplexInternal<?> oldDb = (ODatabaseComplexInternal<?>) suspendedResources;
         TransactionSynchronizationManager.bindResource(dbf, oldDb);
-        ODatabaseRecordThreadLocal.INSTANCE.set((ODatabaseRecord) oldDb.getUnderlying());
+        ODatabaseRecordThreadLocal.INSTANCE.set((ODatabaseRecordInternal) oldDb.getUnderlying());
     }
 
     @Override
